@@ -1,0 +1,20 @@
+{
+  "name": "showcasegg_main",
+  "version": "1.0.0",
+  "description": "Utilizes the PlayerDB API and mc-api-io to get user's game information to disaply it in a grading card style",
+  "main": "main.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Josue Miguel",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14"
+  }
+}
