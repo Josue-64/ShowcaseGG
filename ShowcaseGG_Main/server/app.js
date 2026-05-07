@@ -107,11 +107,44 @@ app.get("/api/profile", async function (request, response) {
   }
 });
 
+// get games
+app.get("/api/games", async (request, response) => {
+  const steamId = request.query.steamId;
+
+  if (!steamId) {
+    return response.status(400).json({ error: "Steam ID missing" });
+  }
+
+  const steamUrl =
+    "https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/" +
+    "?key=" +
+    STEAM_API_KEY +
+    "&steamid=" +
+    steamId +
+    "&include_appinfo=true" +
+    "&include_played_free_games=true";
+
+  try {
+    const steamResponse = await fetch(steamUrl);
+    const steamData = await steamResponse.json();
+
+    return response.json(steamData);
+  } catch (error) {
+    console.log("Games error:", error);
+
+    return response.status(500).json({
+      error: "Steam games request failed",
+      message: error.message,
+    });
+  }
+});
+
 // 404
 app.use((request, response) => {
   response.status(404).send("Page not found");
 });
 
+// server start
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
