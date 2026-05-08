@@ -43,6 +43,13 @@ function startProfilePage() {
 async function loadProfile(username) {
   console.log("Loading profile:", username);
 
+  let steamId = "";
+
+  if (/^\d+$/.test(username)) {
+
+    steamId = username;
+
+  } else {
   const resolveResponse = await fetch("/api/resolve?username=" + username);
   const resolveData = await resolveResponse.json();
 
@@ -52,8 +59,8 @@ async function loadProfile(username) {
     document.getElementById("usernameDisplay").innerText = "User not found";
     return;
   }
-
-  const steamId = resolveData.response.steamid;
+    steamId = resolveData.response.steamid;
+}
 
   const profileResponse = await fetch("/api/profile?steamId=" + steamId);
   const profileData = await profileResponse.json();
@@ -135,7 +142,6 @@ function renderGames(games) {
           src="${iconUrl}" 
           width="40" 
           height="40"
-          onerror="this.src='https://via.placeholder.com/40'"
         >
 
         <div>

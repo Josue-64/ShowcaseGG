@@ -1,27 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <title>Steam Profile</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <title>Steam Profile</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="cardStyle.css" />
+  </head>
+  <body>
+    <div class="cardContainer">
+      <div class="profileCard">
+        <div class="profileHeader">
+          <div class="profileLabel">
+            <p>STEAM PROFILE</p>
 
-  <div class="profileCard">
+            <h1 id="usernameDisplay">Loading...</h1>
+          </div>
 
-    <h1 id="usernameDisplay">Loading...</h1>
+          <div class="profileGradeBox">
+            <p>GRADE</p>
+            <h2>10</h2>
+          </div>
+        </div>
 
-    <img id="avatarImage" width="150">
+        <div class="profileAvatar">
+          <img id="avatarImage" />
+        </div>
 
-    <p id="statusText"></p>
+        <div class="profileHours">
+          <p id="totalHours"></p>
+        </div>
 
-    <h2>Most Played Games</h2>
-    <div id="gamesList"></div>
+        <div class="profileGames">
+          <h2>Most Played Games</h2>
 
-    <p id="totalHours"></p>
+          <div id="gamesList"></div>
+        </div>
+      </div>
+    </div>
 
-  </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 
-  <script src="main.js"></script>
-
-</body>
+    <script src="main.js"></script>
+  </body>
 </html>

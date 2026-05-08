@@ -64,36 +64,6 @@ main {
     padding: 20px;
 }
 
-/* Card */
-
-.card {
-    width: 100%;
-    max-width: 600px;
-
-    padding: 40px;
-
-     background: linear-gradient(135deg, #1e3a8a, #4c1d95);
-
-    border: 1px solid #333;
-
-    border-radius: 10px;
-
-    text-align: center;
-
-    opacity: 0.95;
-}
-
-.card h2 {
-    font-size: 40px;
-    margin-bottom: 10px;
-}
-
-.card p {
-    color: #cbd5e1;
-    margin-bottom: 30px;
-    font-size: 16px;
-}
-
 /* Input */
 
 .search-box {
