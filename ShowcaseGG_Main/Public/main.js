@@ -142,6 +142,7 @@ function renderGames(games) {
           src="${iconUrl}" 
           width="40" 
           height="40"
+           onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png'"
         >
 
         <div>
