@@ -46,21 +46,19 @@ async function loadProfile(username) {
   let steamId = "";
 
   if (/^\d+$/.test(username)) {
-
     steamId = username;
-
   } else {
-  const resolveResponse = await fetch("/api/resolve?username=" + username);
-  const resolveData = await resolveResponse.json();
+    const resolveResponse = await fetch("/api/resolve?username=" + username);
+    const resolveData = await resolveResponse.json();
 
-  console.log(resolveData);
+    console.log(resolveData);
 
-  if (!resolveData.response || resolveData.response.success !== 1) {
-    document.getElementById("usernameDisplay").innerText = "User not found";
-    return;
-  }
+    if (!resolveData.response || resolveData.response.success !== 1) {
+      document.getElementById("usernameDisplay").innerText = "User not found";
+      return;
+    }
     steamId = resolveData.response.steamid;
-}
+  }
 
   const profileResponse = await fetch("/api/profile?steamId=" + steamId);
   const profileData = await profileResponse.json();
@@ -86,7 +84,28 @@ async function loadProfile(username) {
 function renderProfile(player) {
   document.getElementById("usernameDisplay").innerText = player.personaname;
   document.getElementById("avatarImage").src = player.avatarfull;
+
+  const steamProfileUrl = `https://steamcommunity.com/profiles/${player.steamid}`;
+
+  const qrContainer = document.getElementById("qrcode");
+  qrContainer.innerHTML = "";
+
+  const qr = new QRCodeStyling({
+    width: 80,
+    height: 80,
+    data: steamProfileUrl,
+    dotsOptions: {
+      color: "#111827",
+      type: "rounded"
+    },
+    backgroundOptions: {
+      color: "#ffffff"
+    }
+  });
+
+  qr.append(qrContainer);
 }
+
 
 // load games
 async function loadGames(steamId) {
@@ -123,7 +142,7 @@ function renderGames(games) {
 
   const topGames = games
     .sort((a, b) => b.playtime_forever - a.playtime_forever)
-    .slice(0, 5);
+    .slice(0, 6);
 
   topGames.forEach((game) => {
     const iconUrl =
@@ -140,14 +159,14 @@ function renderGames(games) {
 
         <img 
           src="${iconUrl}" 
-          width="40" 
-          height="40"
+          width="64" 
+          height="64"
            onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png'"
         >
 
         <div>
           <p style="margin:0;"><b>${game.name}</b></p>
-          <p style="margin:0; font-size:12px;">
+          <p style="margin:0; font-size:18px; font-weight:bold;">
             ${Math.round(game.playtime_forever / 60)} hours
           </p>
         </div>
@@ -157,4 +176,34 @@ function renderGames(games) {
 
     gamesList.appendChild(div);
   });
+  
+}
+
+
+// Toggle 3D effect on the profile card
+let tiltEnabled = false;
+
+function toggleTilt() {
+  const tiltButton = document.getElementById("tiltButton");
+  const card = document.querySelector(".js-tilt");
+
+  tiltEnabled = !tiltEnabled;
+
+  if (tiltEnabled) {
+    VanillaTilt.init(card, {
+      max: 10,
+      speed: 400,
+      scale: 1,
+      glare: true,
+      "max-glare": 1
+    });
+
+    tiltButton.textContent = "Disable 3D";
+  } else {
+    if (card.vanillaTilt) {
+      card.vanillaTilt.destroy();
+    }
+
+    tiltButton.textContent = "Enable 3D";
+  }
 }

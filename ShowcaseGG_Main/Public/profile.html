@@ -3,21 +3,38 @@
   <head>
     <title>Steam Profile</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="cardStyle.css" />
   </head>
   <body>
+    <header class="navbar">
+      <a href="/">
+        <h1 class="logo">Showcase<span>GG</span></h1>
+      </a>
+
+      <nav>
+        <a href="/home">Home</a>
+        <a href="/gallery">Gallery</a>
+        <a href="/about">About</a>
+        <a href="/help">Help</a>
+      </nav>
+    </header>
+
     <div class="cardContainer">
-      <div class="profileCard">
+      <button id="tiltButton" onclick="toggleTilt()">Toggle 3D</button>
+      <div class="profileCard js-tilt">
         <div class="profileHeader">
           <div class="profileLabel">
             <p>STEAM PROFILE</p>
-
             <h1 id="usernameDisplay">Loading...</h1>
           </div>
-
+          <div style="font-weight: bold; font-size: 22px; color: black">
+            Showcase<span style="color: #7c5cff">GG</span>
+          </div>
           <div class="profileGradeBox">
-            <p>GRADE</p>
-            <h2>10</h2>
+            <div id="qrcode"></div>
+            <div class="gradeText">
+              <p>GRADE</p>
+              <h2>10</h2>
+            </div>
           </div>
         </div>
 
@@ -37,8 +54,8 @@
       </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
-
+    <script src="https://unpkg.com/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+    <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <script src="main.js"></script>
   </body>
 </html>
