@@ -58,7 +58,7 @@ nav a:hover {
 main {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 
   width: 100%;
   min-height: 80vh;
@@ -206,9 +206,21 @@ main {
 
 .profileHeader {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   border: 4px solid #7c5cff;
+  gap: 12px;
+  padding: 12px;
+}
+
+.profileLabel {
+  min-width: 0;
+}
+
+.profileLabel h1 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .profileLabel h2,
@@ -224,12 +236,11 @@ main {
 .profileGradeBox {
   border-left: 4px solid #7c5cff;
   padding-left: 14px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   gap: 12px;
+    flex-shrink: 0;
 }
 
 #qrcode {
