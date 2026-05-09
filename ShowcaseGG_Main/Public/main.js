@@ -96,16 +96,15 @@ function renderProfile(player) {
     data: steamProfileUrl,
     dotsOptions: {
       color: "#111827",
-      type: "rounded"
+      type: "rounded",
     },
     backgroundOptions: {
-      color: "#ffffff"
-    }
+      color: "#ffffff",
+    },
   });
 
   qr.append(qrContainer);
 }
-
 
 // load games
 async function loadGames(steamId) {
@@ -176,9 +175,7 @@ function renderGames(games) {
 
     gamesList.appendChild(div);
   });
-  
 }
-
 
 // Toggle 3D effect on the profile card
 let tiltEnabled = false;
@@ -193,9 +190,9 @@ function toggleTilt() {
     VanillaTilt.init(card, {
       max: 10,
       speed: 400,
-      scale: 1,
+      scale: 1.05,
       glare: true,
-      "max-glare": 1
+      "max-glare": 1,
     });
 
     tiltButton.textContent = "Disable 3D";
