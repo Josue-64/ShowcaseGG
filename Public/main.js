@@ -211,7 +211,10 @@ function applyCustomization() {
   const count = parseInt(document.getElementById("gameCount").value);
 
   if (customName) document.getElementById("usernameDisplay").innerText = customName;
-  if (customGrade) document.getElementById("gradeDisplay").innerText = customGrade;
+  if (customGrade) {
+  const truncated = customGrade.toString().slice(0, 4);
+  document.getElementById("gradeDisplay").innerText = truncated;
+}
 
   const checkboxes = document.querySelectorAll("#gamesCheckboxes input[type='checkbox']:checked");
   const selectedIds = Array.from(checkboxes).map(box => box.value);
