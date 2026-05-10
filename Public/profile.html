@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Steam Profile</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <a href="/">
+        <h1 class="logo">Showcase<span>GG</span></h1>
+      </a>
+
+      <nav>
+        <a href="/home">Home</a>
+        <a href="/gallery">Gallery</a>
+        <a href="/about">About</a>
+        <button class="navToggle" onclick="toggleSidebar()" aria-label="Open panel">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </header>
+
+    <div class="cardContainer">
+      <div class="profileCard js-tilt" onclick="toggleTilt()"">
+        <div class="profileHeader">
+          <div class="profileLabel">
+            <p>STEAM PROFILE</p>
+            <h1 id="usernameDisplay">Loading...</h1>
+          </div>
+          <div class="showcaseLogoText">
+            <div class="cardLogoText">
+              Showcase<span>GG</span>
+            </div>
+          </div>
+              <div class="profileGradeBox">
+            <div id="qrcode"></div>
+            <div class="gradeText">
+              <p>GRADE</p>
+              <h2 id="gradeDisplay">10</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="profileAvatar">
+          <img id="avatarImage" />
+        </div>
+
+        <div class="profileHours">
+          <p id="totalHours"></p>
+        </div>
+
+        <div class="profileGames">
+          <h2>Most Played Games</h2>
+
+          <div id="gamesList"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+      
+      <div class="sidebarHeader">
+        <h2 class="sidebarTitle">Customize Card</h2>
+        <button onclick="toggleSidebar()" class="sidebarClose">X</button>
+      </div>
+
+      <div class="sidebarField">
+        <label>Display Name</label>
+        <input type="text" id="customName" placeholder="Change name..." />
+      </div>
+
+      <div class="sidebarField">
+        <label>Grade</label>
+        <input type="number" id="customGrade" min="1" max="10" placeholder="1-10" />
+      </div>
+
+      <div class="sidebarField">
+        <label>Number of Games</label>
+        <input type="range" id="gameCount" min="1" max="6" value="6" />
+        <span id="gameCountDisplay">6</span>
+      </div>
+
+      <div class="sidebarField">
+        <label>Search Games</label>
+        <input type="text" id="gamesSearch" placeholder="Search games..." />
+        <div id="gamesCheckboxes"></div>
+      </div>
+
+      <button class="sidebarApply" onclick="applyCustomization()">Apply</button>
+</div>
+
+
+    <script src="https://unpkg.com/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+    <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

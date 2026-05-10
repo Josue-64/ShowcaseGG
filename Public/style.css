@@ -35,6 +35,19 @@ body {
   color: white;
 }
 
+.cardLogoText {
+  font-weight: bold;
+  font-size: 22px;
+  color: black;
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cardLogoText span {
+  color: #7c5cff;
+}
+
 a {
   text-decoration: none;
 }
@@ -181,6 +194,7 @@ main {
   position: relative;
   overflow: visible;
   transition: transform 0.4s ease;
+  
 }
 
 .profileHeader,
@@ -207,7 +221,7 @@ main {
 
 .profileHeader {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   border: 4px solid #7c5cff;
   gap: 12px;
@@ -216,6 +230,7 @@ main {
 
 .profileLabel {
   min-width: 0;
+
 }
 
 .profileLabel h1 {
@@ -227,10 +242,11 @@ main {
 .profileLabel h2,
 .profileLabel p {
   margin: 0;
+
 }
 
 .profileLabel p {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: bold;
 }
 
@@ -281,21 +297,6 @@ main {
   border-radius: 8px;
 }
 
-#tiltButton {
-  padding: 20px 40px;
-  border: none;
-  border-radius: 10px;
-  background-color: #7c5cff;
-  color: white;
-  cursor: pointer;
-  gap: 20px;
-  font-size: 20px;
-}
-
-#tiltButton:hover {
-  background: linear-gradient(135deg, #1e3a8a, #4c1d95);
-}
-
 /* About Page */
 .about {
   display: flex;
@@ -331,4 +332,155 @@ main {
 
 .about_content strong {
   color: white;
+}
+
+/* Sidebar and Nav Button */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  height: 100vh;
+  background: #0b1020;
+  border-left: 1px solid #333;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: right 0.3s ease;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.sidebar.open {
+  right: 0;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+}
+
+.navToggle {
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  font-size: 22px;
+  cursor: pointer;
+  margin-left: 20px;
+  padding: 0;
+}
+
+.navToggle:hover {
+  color: #7c5cff;
+}
+
+.navToggle {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  margin-left: 20px;
+}
+.navToggle span {
+  display: block;
+  width: 70%;
+  height: 2px;
+  background: #cbd5e1;
+  border-radius: 2px;
+}
+
+.navToggle:hover span {
+  background: #7c5cff;
+}
+
+.sidebarTitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+.sidebarField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebarField label {
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #a78bfa;
+}
+
+.sidebarField input[type="text"],
+.sidebarField input[type="number"] {
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #1a1a2e;
+  color: white;
+  font-size: 18px;
+}
+
+#gamesCheckboxes {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#gamesCheckboxes label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #cbd5e1;
+  cursor: pointer;
+}
+
+#gamesCheckboxes input[type="checkbox"] {
+  accent-color: #7c5cff;
+}
+
+.sidebarApply {
+  padding: 12px;
+  background: #7c5cff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.sidebarApply:hover {
+  background: #5b3df0;
+}
+.sidebarClose {
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.sidebarClose:hover {
+  color: #7c5cff;
+}
+
+.sidebarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

@@ -135,46 +135,92 @@ async function loadGames(steamId) {
 }
 
 // render games icons
+let allGames = [];
+
 function renderGames(games) {
+  allGames = games.sort((a, b) => b.playtime_forever - a.playtime_forever);
+  buildCheckboxes(allGames);
+
+  const slider = document.getElementById("gameCount");
+  const display = document.getElementById("gameCountDisplay");
+  if (slider) {
+    slider.oninput = function () {
+      display.innerText = this.value;
+    };
+  }
+
+  const search = document.getElementById("gamesSearch");
+  if (search) {
+    search.oninput = function () {
+      const query = this.value.toLowerCase();
+      buildCheckboxes(allGames.filter(g => g.name.toLowerCase().includes(query)));
+    };
+  }
+
+  displayGames(allGames.slice(0, 6));
+}
+
+function buildCheckboxes(games) {
+  const container = document.getElementById("gamesCheckboxes");
+  container.innerHTML = "";
+  games.forEach((game) => {
+    container.innerHTML += `
+      <label>
+        <input type="checkbox" value="${game.appid}" onchange="enforceLimit()" />
+        ${game.name}
+      </label>
+    `;
+  });
+}
+
+function enforceLimit() {
+  const all = document.querySelectorAll("#gamesCheckboxes input[type='checkbox']");
+  const checked = document.querySelectorAll("#gamesCheckboxes input[type='checkbox']:checked");
+  
+  all.forEach(box => {
+    if (!box.checked) {
+      box.disabled = checked.length >= 6;
+    }
+  });
+}
+
+function displayGames(games) {
   const gamesList = document.getElementById("gamesList");
   gamesList.innerHTML = "";
-
-  const topGames = games
-    .sort((a, b) => b.playtime_forever - a.playtime_forever)
-    .slice(0, 6);
-
-  topGames.forEach((game) => {
-    const iconUrl =
-      "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/" +
-      game.appid +
-      "/" +
-      game.img_icon_url +
-      ".jpg";
-
+  games.forEach((game) => {
+    const iconUrl = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/" +
+      game.appid + "/" + game.img_icon_url + ".jpg";
     const div = document.createElement("div");
-
     div.innerHTML = `
       <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-
-        <img 
-          src="${iconUrl}" 
-          width="64" 
-          height="64"
-           onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png'"
-        >
-
+        <img src="${iconUrl}" width="64" height="64"
+          onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png'">
         <div>
           <p style="margin:0;"><b>${game.name}</b></p>
-          <p style="margin:0; font-size:18px; font-weight:bold;">
-            ${Math.round(game.playtime_forever / 60)} hours
-          </p>
+          <p style="margin:0; font-size:18px; font-weight:bold;">${Math.round(game.playtime_forever / 60)} hours</p>
         </div>
-
       </div>
     `;
-
     gamesList.appendChild(div);
   });
+}
+
+function applyCustomization() {
+  const customName = document.getElementById("customName").value;
+  const customGrade = document.getElementById("customGrade").value;
+  const count = parseInt(document.getElementById("gameCount").value);
+
+  if (customName) document.getElementById("usernameDisplay").innerText = customName;
+  if (customGrade) document.getElementById("gradeDisplay").innerText = customGrade;
+
+  const checkboxes = document.querySelectorAll("#gamesCheckboxes input[type='checkbox']:checked");
+  const selectedIds = Array.from(checkboxes).map(box => box.value);
+
+  const selectedGames = selectedIds.length > 0
+    ? allGames.filter(g => selectedIds.includes(String(g.appid)))
+    : allGames;
+
+  displayGames(selectedGames.slice(0, count));
 }
 
 // Toggle 3D effect on the profile card
@@ -183,7 +229,6 @@ let tiltEnabled = false;
 function toggleTilt() {
   const tiltButton = document.getElementById("tiltButton");
   const card = document.querySelector(".js-tilt");
-
   tiltEnabled = !tiltEnabled;
 
   if (tiltEnabled) {
@@ -195,12 +240,13 @@ function toggleTilt() {
       "max-glare": 1,
     });
 
-    tiltButton.textContent = "Disable 3D";
   } else {
     if (card.vanillaTilt) {
       card.vanillaTilt.destroy();
     }
-
-    tiltButton.textContent = "Enable 3D";
   }
+}
+
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
 }

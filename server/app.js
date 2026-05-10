@@ -26,10 +26,6 @@ app.get("/about", (request, response) => {
   response.sendFile(path.join(__dirname, "../Public/about.html"));
 });
 
-app.get("/functionality", (request, response) => {
-  response.sendFile(path.join(__dirname, "../Public/functionality.html"));
-});
-
 // resolve steam username
 app.get("/api/resolve", async (request, response) => {
   const username = request.query.username;
