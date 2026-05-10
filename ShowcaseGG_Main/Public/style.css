@@ -295,3 +295,40 @@ main {
 #tiltButton:hover {
   background: linear-gradient(135deg, #1e3a8a, #4c1d95);
 }
+
+/* About Page */
+.about {
+  display: flex;
+  justify-content: center;
+  padding: 80px 40px;
+}
+
+.about_content {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.about_label {
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #a78bfa;
+  margin-top: 20px;
+}
+
+.about_content h1 {
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.about_content p {
+  color: #cbd5e1;
+  line-height: 1.8;
+}
+
+.about_content strong {
+  color: white;
+}

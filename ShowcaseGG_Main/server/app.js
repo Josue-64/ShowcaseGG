@@ -26,8 +26,8 @@ app.get("/about", (request, response) => {
   response.sendFile(path.join(__dirname, "../Public/about.html"));
 });
 
-app.get("/help", (request, response) => {
-  response.sendFile(path.join(__dirname, "../Public/help.html"));
+app.get("/functionality", (request, response) => {
+  response.sendFile(path.join(__dirname, "../Public/functionality.html"));
 });
 
 // resolve steam username
