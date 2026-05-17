@@ -1,16 +1,16 @@
 {
-  "name": "showcasegg_main",
+  "name": "showcasegg",
   "version": "1.0.0",
-  "description": "Utilizes the PlayerDB API and mc-api-io to get user's game information to disaply it in a grading card style",
-  "main": "main.js",
+  "description": "Uses the Steam Web API to fetch and display the user's game library, including game details and playtime.",
+  "main": "index.js",
   "scripts": {
-    "start": "node server/app.js",
-    "dev": "nodemon server/app.js",
+    "start": "node index.js",
+"dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Josue Miguel",
-  "license": "ISC",
+  "license":"ISC",
   "type": "commonjs",
   "dependencies": {
     "@supabase/supabase-js": "^2.105.4",
