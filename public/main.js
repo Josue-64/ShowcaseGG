@@ -355,7 +355,7 @@ function renderCards(cards) {
 
   cards.forEach(card => {
     const div = document.createElement("div");
-    div.className = "galleryCard";
+    div.className = "profileCard";
 
     div.innerHTML = `
       <div class="profileHeader">
@@ -376,7 +376,7 @@ function renderCards(cards) {
         <img src="${card.avatar_url}" width="100%" />
       </div>
       <div class="profileHours">
-        <p>Total hours: ${card.total_hours}</p>
+        <p class="totalHours">Total hours: ${card.total_hours}</p>
       </div>
       <div class="profileGames">
         <h2>Most Played Games</h2>
@@ -400,6 +400,8 @@ function renderCards(cards) {
     `;
 
     grid.appendChild(div);
+
+    
 
     const steamProfileUrl = `https://steamcommunity.com/profiles/${card.steamid}`;
     const qr = new QRCodeStyling({
