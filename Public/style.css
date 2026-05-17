@@ -25,7 +25,7 @@ body {
 
   background-color: #0b1020;
 
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid black;
 }
 
 .logo {
@@ -89,7 +89,7 @@ main {
 
   background: linear-gradient(135deg, #1e3a8a, #4c1d95);
 
-  border: 1px solid #333;
+  border: 1px solid black;
 
   border-radius: 10px;
 
@@ -137,28 +137,28 @@ main {
 }
 
 /* Input */
-.search-box {
+.search_box {
   display: flex;
   gap: 10px;
 }
 
-.search-box input {
+.search_box input {
   flex: 1;
 
   padding: 12px;
 
-  border: 1px solid #333;
+  border: 1px solid black;
   border-radius: 5px;
 
   background-color: #0b1020;
   color: white;
 }
 
-.search-box input::placeholder {
+.search_box input::placeholder {
   color: #888;
 }
 
-.search-box button {
+.search_box button {
   padding: 12px 20px;
 
   border: none;
@@ -170,7 +170,7 @@ main {
   cursor: pointer;
 }
 
-.search-box button:hover {
+.search_box button:hover {
   background-color: #5b3df0;
 }
 
@@ -194,7 +194,6 @@ main {
   position: relative;
   overflow: visible;
   transition: transform 0.4s ease;
-  
 }
 
 .profileHeader,
@@ -230,7 +229,6 @@ main {
 
 .profileLabel {
   min-width: 0;
-
 }
 
 .profileLabel h1 {
@@ -242,7 +240,6 @@ main {
 .profileLabel h2,
 .profileLabel p {
   margin: 0;
-
 }
 
 .profileLabel p {
@@ -343,7 +340,7 @@ main {
   width: 320px;
   height: 100vh;
   background: #0b1020;
-  border-left: 1px solid #333;
+  border-left: 1px solid black;
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
@@ -422,7 +419,7 @@ nav {
 .sidebarField input[type="text"],
 .sidebarField input[type="number"] {
   padding: 10px;
-  border: 1px solid #333;
+  border: 1px solid black;
   border-radius: 6px;
   background: #1a1a2e;
   color: white;
@@ -432,7 +429,7 @@ nav {
 #gamesCheckboxes {
   max-height: 200px;
   overflow-y: auto;
-  border: 1px solid #333;
+  border: 1px solid black;
   border-radius: 6px;
   padding: 8px;
   display: flex;
@@ -483,4 +480,69 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+
+/* Gallary Page */
+
+.gallery {
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.galleryHeader {
+  text-align: center;
+}
+
+.galleryHeader h1 {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+#galleryGrid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+}
+.galleryCard {
+  width: 600px;
+  background: #d7d7d7;
+  border-radius: 24px;
+  padding: 18px;
+  border: 10px solid #bdbdbd;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.gamesList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.galleryHeader {
+  text-align: center;
+  width: 100%;
+}
+
+.galleryFilters {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.galleryFilters input,
+.galleryFilters select {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 6px;
+  font-size: 14px;
 }

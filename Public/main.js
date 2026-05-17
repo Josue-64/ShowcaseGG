@@ -1,7 +1,11 @@
 window.onload = function () {
   startHomePage();
-  startProfilePage();
+  startProfilePage(); 
+  startGalleryPage();
 };
+
+let currentSteamId = "";
+let allGames = [];
 
 // home page
 function startHomePage() {
@@ -54,11 +58,13 @@ async function loadProfile(username) {
     console.log(resolveData);
 
     if (!resolveData.response || resolveData.response.success !== 1) {
-      document.getElementById("usernameDisplay").innerText = "User not found";
+      document.getElementById("usernameDisplay").innerText = "Invalid username";
       return;
     }
     steamId = resolveData.response.steamid;
   }
+
+   currentSteamId = steamId;
 
   const profileResponse = await fetch("/api/profile?steamId=" + steamId);
   const profileData = await profileResponse.json();
@@ -135,7 +141,6 @@ async function loadGames(steamId) {
 }
 
 // render games icons
-let allGames = [];
 
 function renderGames(games) {
   allGames = games.sort((a, b) => b.playtime_forever - a.playtime_forever);
@@ -191,6 +196,14 @@ function displayGames(games) {
     const iconUrl = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/" +
       game.appid + "/" + game.img_icon_url + ".jpg";
     const div = document.createElement("div");
+
+    div.dataset.game = JSON.stringify({
+      appid: game.appid,
+      name: game.name,
+      playtime_forever: game.playtime_forever,
+      img_icon_url: game.img_icon_url
+    });
+
     div.innerHTML = `
       <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
         <img src="${iconUrl}" width="64" height="64"
@@ -203,6 +216,41 @@ function displayGames(games) {
     `;
     gamesList.appendChild(div);
   });
+}
+
+function getSaveData() {
+  const gameDivs = document.querySelectorAll("#gamesList > div");
+  const top_games = Array.from(gameDivs).map(div => JSON.parse(div.dataset.game));
+
+  return {
+    steamid: currentSteamId,
+    username: document.getElementById("usernameDisplay").innerText,
+    avatar_url: document.getElementById("avatarImage").src,
+    total_hours: parseInt(document.getElementById("totalHours").innerText.replace("Total hours: ", "")),
+    grade: document.getElementById("gradeDisplay").innerText,
+    top_games: top_games
+  };
+}
+
+async function saveCard() {
+  const card = getSaveData();
+
+  const response = await fetch("/api/save", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(card)
+  });
+
+  const result = await response.json();
+  if (result.success) {
+    if (result.updated) {
+      alert("Card updated!");
+    } else {
+      alert("Card saved!");
+    }
+  } else {
+    alert("Failed to save card.");
+  }
 }
 
 function applyCustomization() {
@@ -252,4 +300,111 @@ function toggleTilt() {
 
 function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("open");
+}
+
+// gallery page
+function startGalleryPage() {
+  const grid = document.getElementById("galleryGrid");
+  if (!grid) return;
+   console.log("grid:", grid);
+
+  loadGallery();
+}
+
+async function loadGallery() {
+  const response = await fetch("/api/gallery");
+  const result = await response.json();
+
+  const grid = document.getElementById("galleryGrid");
+
+  if (!result || result.length === 0) {
+    grid.innerText = "No cards saved yet.";
+    return;
+  }
+
+  allCards = result;
+  renderCards(allCards);
+
+  document.getElementById("filterName").oninput = applyFilters;
+  document.getElementById("filterSort").onchange = applyFilters;
+}
+
+let allCards = [];
+
+function applyFilters() {
+  const nameQuery = document.getElementById("filterName").value.toLowerCase();
+  const sort = document.getElementById("filterSort").value;
+
+  let filtered = allCards.filter(card => card.username.toLowerCase().includes(nameQuery));
+
+  if (sort === "nameAsc") filtered.sort((a, b) => a.username.localeCompare(b.username));
+  if (sort === "nameDesc") filtered.sort((a, b) => b.username.localeCompare(a.username));
+  if (sort === "hoursDesc") filtered.sort((a, b) => b.total_hours - a.total_hours);
+if (sort === "hoursAsc") filtered.sort((a, b) => a.total_hours - b.total_hours);
+
+  renderCards(filtered);
+}
+// renders cards in gallery
+function renderCards(cards) {
+  const grid = document.getElementById("galleryGrid");
+  grid.innerHTML = "";
+
+  cards.forEach(card => {
+    const div = document.createElement("div");
+    div.className = "galleryCard";
+
+    div.innerHTML = `
+      <div class="profileHeader">
+        <div class="profileLabel">
+          <p>STEAM PROFILE</p>
+          <h1>${card.username}</h1>
+        </div>
+        <div class="cardLogoText">Showcase<span>GG</span></div>
+        <div class="profileGradeBox">
+          <div id="qr-${card.id}"></div>
+          <div class="gradeText">
+            <p>GRADE</p>
+            <h2>${card.grade}</h2>
+          </div>
+        </div>
+      </div>
+      <div class="profileAvatar">
+        <img src="${card.avatar_url}" width="100%" />
+      </div>
+      <div class="profileHours">
+        <p>Total hours: ${card.total_hours}</p>
+      </div>
+      <div class="profileGames">
+        <h2>Most Played Games</h2>
+        <div class="gamesList">
+          ${card.top_games.map(game => {
+            const iconUrl = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/" +
+              game.appid + "/" + game.img_icon_url + ".jpg";
+            return `
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <img src="${iconUrl}" width="64" height="64"
+                  onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png'">
+                <div>
+                  <p style="margin:0;"><b>${game.name}</b></p>
+                  <p style="margin:0; font-size:14px; font-weight:bold;">${Math.round(game.playtime_forever / 60)} hours</p>
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(div);
+
+    const steamProfileUrl = `https://steamcommunity.com/profiles/${card.steamid}`;
+    const qr = new QRCodeStyling({
+      width: 80,
+      height: 80,
+      data: steamProfileUrl,
+      dotsOptions: { color: "#111827", type: "rounded" },
+      backgroundOptions: { color: "#ffffff" }
+    });
+    qr.append(document.getElementById(`qr-${card.id}`));
+  });
 }

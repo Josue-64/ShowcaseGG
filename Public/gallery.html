@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Gallery</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <a href="/">
+        <h1 class="logo">Showcase<span>GG</span></h1>
+      </a>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/gallery">Gallery</a>
+        <a href="/about">About</a>
+      </nav>
+    </header>
+
+    <main class="gallery">
+      <div class="galleryHeader">
+        <h1 class="savedCradsTitle">Global Cards</h1>
+      </div>
+      <div class="galleryFilters">
+  <input type="text" id="filterName" placeholder="Search by name..." />
+  <select id="filterSort">
+    <option value="default">Default</option>
+    <option value="nameAsc">Name A-Z</option>
+    <option value="nameDesc">Name Z-A</option>
+    <option value="hoursDesc">Most Hours</option>
+    <option value="hoursAsc">Least Hours</option>
+  </select>
+</div>
+
+      <div id="galleryGrid"></div>
+    </main>
+    <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

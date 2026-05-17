@@ -1,12 +1,17 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+const supabaseClient = require("@supabase/supabase-js");
 require("dotenv").config();
 
 const port = 3000;
 
 const STEAM_API_KEY = process.env.STEAM_API_KEY;
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = supabaseClient.createClient(supabaseUrl, supabaseKey);
 
+app.use(express.json());
 app.use(express.static(path.join(__dirname, "../Public")));
 
 // pages
@@ -132,6 +137,73 @@ app.get("/api/games", async (request, response) => {
       error: "Steam games request failed",
       message: error.message,
     });
+  }
+});
+
+// save card
+app.post("/api/save", async (request, response) => {
+  const card = request.body;
+
+  const { data: existing } = await supabase
+    .from("cards")
+    .select("id")
+    .eq("steamid", card.steamid)
+    .single();
+
+  if (existing) {
+    const { data, error } = await supabase
+      .from("cards")
+      .update({
+        username: card.username,
+        avatar_url: card.avatar_url,
+        total_hours: card.total_hours,
+        grade: card.grade,
+        top_games: card.top_games
+      })
+      .eq("steamid", card.steamid);
+
+    if (error) {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      response.statusCode = 500;
+      response.send(error);
+    } else {
+      response.json({ success: true, updated: true });
+    }
+  } else {
+    const { data, error } = await supabase
+      .from("cards")
+      .insert([{
+        steamid: card.steamid,
+        username: card.username,
+        avatar_url: card.avatar_url,
+        total_hours: card.total_hours,
+        grade: card.grade,
+        top_games: card.top_games
+      }]);
+
+    if (error) {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      response.statusCode = 500;
+      response.send(error);
+    } else {
+      response.json({ success: true, updated: false });
+    }
+  }
+});
+
+// get all cards for gallery
+app.get("/api/gallery", async (request, response) => {
+  const { data, error } = await supabase
+    .from("cards")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.log(`Error: ${JSON.stringify(error)}`);
+    response.statusCode = 500;
+    response.send(error);
+  } else {
+    response.json(data);
   }
 });
 
