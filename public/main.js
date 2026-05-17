@@ -1,13 +1,13 @@
 window.onload = function () {
   startHomePage();
   startProfilePage(); 
-  startGalleryPage();
+  loadGallery()
 };
 
 let currentSteamId = "";
 let allGames = [];
 
-// home page
+//Home: Wires up the search button to redirect the user to their profile page using the entered username
 function startHomePage() {
   const usernameInput = document.getElementById("username");
   const searchButton = document.getElementById("searchButton");
@@ -26,7 +26,7 @@ function startHomePage() {
   };
 }
 
-// profile page
+//Profile: Reads the username from the URL and calls loadProfile to start fetching data
 function startProfilePage() {
   const usernameDisplay = document.getElementById("usernameDisplay");
 
@@ -43,7 +43,7 @@ function startProfilePage() {
   loadProfile(username);
 }
 
-// load steam profile
+// Profile: Resolves a username to a Steam ID, then fetches the player data, then calls renderProfile and loadGames.
 async function loadProfile(username) {
   console.log("Loading profile:", username);
 
@@ -86,7 +86,7 @@ async function loadProfile(username) {
   loadGames(steamId);
 }
 
-// show profile info
+// Profile: Populates the card with the player's display name, avatar, and a QR code that links to their Steam profile
 function renderProfile(player) {
   document.getElementById("usernameDisplay").innerText = player.personaname;
   document.getElementById("avatarImage").src = player.avatarfull;
@@ -111,8 +111,7 @@ function renderProfile(player) {
 
   qr.append(qrContainer);
 }
-
-// load games
+// Games: Fetches the user's game library, calculates total hours, then calls renderGames to display them
 async function loadGames(steamId) {
   const gamesResponse = await fetch("/api/games?steamId=" + steamId);
   const gamesData = await gamesResponse.json();
@@ -140,8 +139,8 @@ async function loadGames(steamId) {
   }
 }
 
-// render games icons
 
+// Games: Sorts games, stores them in allGames, wires up the slider and search controls, then calls buildCheckboxes and displayGames
 function renderGames(games) {
   allGames = games.sort((a, b) => b.playtime_forever - a.playtime_forever);
   buildCheckboxes(allGames);
@@ -165,19 +164,27 @@ function renderGames(games) {
   displayGames(allGames.slice(0, 6));
 }
 
+// Games: Builds the sidebar checkbox list from a given array of games, it then uses enforceLimit on each checkbox
 function buildCheckboxes(games) {
   const container = document.getElementById("gamesCheckboxes");
   container.innerHTML = "";
+
   games.forEach((game) => {
-    container.innerHTML += `
-      <label>
-        <input type="checkbox" value="${game.appid}" onchange="enforceLimit()" />
-        ${game.name}
-      </label>
-    `;
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+
+    input.type = "checkbox";
+    input.value = game.appid;
+    input.addEventListener("change", enforceLimit);
+
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(game.name));
+    container.appendChild(label);
   });
 }
 
+
+// Games: Prevents more than 6 checkboxes from being selected at once by disabling unchecked ones at the limit.
 function enforceLimit() {
   const all = document.querySelectorAll("#gamesCheckboxes input[type='checkbox']");
   const checked = document.querySelectorAll("#gamesCheckboxes input[type='checkbox']:checked");
@@ -188,7 +195,7 @@ function enforceLimit() {
     }
   });
 }
-
+// Games: Renders each game as a row showing its icon, name, and total hours played.
 function displayGames(games) {
   const gamesList = document.getElementById("gamesList");
   gamesList.innerHTML = "";
@@ -218,6 +225,7 @@ function displayGames(games) {
   });
 }
 
+// Card: Collects the current card from the profile page into a saveable object
 function getSaveData() {
   const gameDivs = document.querySelectorAll("#gamesList > div");
   const top_games = Array.from(gameDivs).map(div => JSON.parse(div.dataset.game));
@@ -232,6 +240,7 @@ function getSaveData() {
   };
 }
 
+// Card: Calls getSaveData then POSTs the result to the server, it also alerts the user if it was saved or updated
 async function saveCard() {
   const card = getSaveData();
 
@@ -253,6 +262,7 @@ async function saveCard() {
   }
 }
 
+// Card: Applies the custom name, grade, and game selection from the sidebar to the card, then calls displayGames
 function applyCustomization() {
   const customName = document.getElementById("customName").value;
   const customGrade = document.getElementById("customGrade").value;
@@ -274,7 +284,7 @@ function applyCustomization() {
   displayGames(selectedGames.slice(0, count));
 }
 
-// Toggle 3D effect on the profile card
+// Card: Toggles the VanillaTilt library 3D hover effect on the profile card on and off
 let tiltEnabled = false;
 
 function toggleTilt() {
@@ -298,19 +308,12 @@ function toggleTilt() {
   }
 }
 
+//UI: Slides the sidebar in or out by toggling it
 function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("open");
 }
 
-// gallery page
-function startGalleryPage() {
-  const grid = document.getElementById("galleryGrid");
-  if (!grid) return;
-   console.log("grid:", grid);
-
-  loadGallery();
-}
-
+// Gallery: Fetches all saved cards from the server, then calls renderCards and wires up the filter using applyFilters
 async function loadGallery() {
   const response = await fetch("/api/gallery");
   const result = await response.json();
@@ -329,6 +332,7 @@ async function loadGallery() {
   document.getElementById("filterSort").onchange = applyFilters;
 }
 
+// Gallery: Filters and re-sorts allCards based on the current inputs, then calls renderCards.
 let allCards = [];
 
 function applyFilters() {
@@ -344,7 +348,7 @@ if (sort === "hoursAsc") filtered.sort((a, b) => a.total_hours - b.total_hours);
 
   renderCards(filtered);
 }
-// renders cards in gallery
+// Gallery: Clears the gallery grid and rebuilds it with each card's info, games list, and QR code
 function renderCards(cards) {
   const grid = document.getElementById("galleryGrid");
   grid.innerHTML = "";
