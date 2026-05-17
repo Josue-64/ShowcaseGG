@@ -12,23 +12,24 @@ const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = supabaseClient.createClient(supabaseUrl, supabaseKey);
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(__dirname + '/public'));
 
-// pages 
-app.get("/", (request, response) => {
-  response.sendFile(path.join(__dirname, "public/home.html"));
+
+// pages
+app.get('/', (req, res) => {
+  res.sendFile('public/home.html', { root: __dirname });
 });
 
-app.get("/profile", (request, response) => {
-  response.sendFile(path.join(__dirname, "public/profile.html"));
+app.get('/profile', (req, res) => {
+  res.sendFile('public/profile.html', { root: __dirname });
 });
 
-app.get("/gallery", (request, response) => {
-  response.sendFile(path.join(__dirname, "public/gallery.html"));
+app.get('/gallery', (req, res) => {
+  res.sendFile('public/gallery.html', { root: __dirname });
 });
 
-app.get("/about", (request, response) => {
-  response.sendFile(path.join(__dirname, "public/about.html"));
+app.get('/about', (req, res) => {
+  res.sendFile('public/about.html', { root: __dirname });
 });
 
 // resolve steam username
