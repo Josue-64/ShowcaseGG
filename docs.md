@@ -24,11 +24,11 @@ git clone https://github.com/Josue-64/ShowcaseGG.git
 npm install
 ```
  
-3. Create a `.env` file in the root directory with the following:
+3. Create a `.env` file in the root directory with the following, then put it in the .gitignore (if commiting to git):
 ```
-STEAM_API_KEY=your_steam_api_key
-SUPABASE_URL=https://yourproject.supabase.co
-SUPABASE_KEY=your_supabase_anon_key
+STEAM_API_KEY= "your steam api key"
+SUPABASE_URL= "your supabase url"
+SUPABASE_KEY= "your supabase key"
 ```
  
 4. Set up your Supabase database by creating a table called `cards` with the following columns:
