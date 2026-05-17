@@ -32,6 +32,7 @@ SUPABASE_KEY= "your supabase key"
 ```
  
 4. Set up your Supabase database by creating a table called `cards` with the following columns:
+   
 | Column | Type |
 |---|---|
 | id | int8 (auto increment, primary key) |
